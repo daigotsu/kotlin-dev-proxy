@@ -7,6 +7,7 @@ import spark.Spark.delete
 import spark.Spark.get
 import spark.Spark.post
 import spark.Spark.put
+import spark.Spark.options
 import spark.SparkBase.externalStaticFileLocation
 import spark.SparkBase.port
 import java.util.Arrays
@@ -81,6 +82,13 @@ fun main(args: Array<String>) {
 
     put(proxyPrefix, { req, res ->
         Request.Put(url(req)).addHeaders(req).addBody(req)
+                .go()
+                .mapHeaders(res).mapStatus(res)
+                .result()
+    })
+
+    options(proxyPrefix, { req, res ->
+        Request.Options(url(req)).addHeaders(req).addBody(req)
                 .go()
                 .mapHeaders(res).mapStatus(res)
                 .result()
